@@ -78,7 +78,7 @@ public class Humain {
 		private int reputation;
 		private String clan;
 		
-		public Yakuza(String nom,String boissionPreferee,int sous, String clan,int reputation) {
+		public Yakuza(String nom,String boissonPreferee,int sous, String clan,int reputation) {
 			super(nom,boissonPreferee,sous);
 			this.clan = clan;
 			this.reputation = reputation;
@@ -94,7 +94,20 @@ public class Humain {
 		
 	}
 	
+	public class Ronin extends Humain{
+		private int honneur;
+		
+		public Ronin(String nom,String boissionPreferee,int sous,int honneur) {
+			super(nom,boissonPreferee,sous);
+			this.honneur = honneur;
+		}
 	
+		public void donner(Commerçant commerçant) {
+			int donnation = (super.sous*10)/100;
+			super.parler("Prend ces " + donnation + " sous.");
+			commerçant.recevoir(donnation);
+		}
+	}
 	
 	
 	public static void main(String[] args) {
