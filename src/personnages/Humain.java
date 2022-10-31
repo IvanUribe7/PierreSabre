@@ -70,6 +70,13 @@ public class Humain {
 			}
 		}
 	
+	public class Yakuza extends Humain{
+		private int reputation;
+		
+		public 
+		
+	}
+	
 	
 	
 	
