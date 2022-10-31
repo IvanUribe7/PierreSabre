@@ -11,6 +11,9 @@ public class Humain {
 		this.sous = sous;
 	}
 	
+	public Humain() {
+	}
+	
 	public void parler(String texte) {
 		System.out.println(prendreParole() + "«" + texte + "»");
 	}
@@ -45,8 +48,8 @@ public class Humain {
 		}
 	}
 
-	public class Commercant extends Humain{
-		public Commercant(String nom, String boissonPreferee, int sous) {
+	public class Commerçant extends Humain{
+		public Commerçant(String nom, String boissonPreferee, int sous) {
 			super(nom,boissonPreferee,sous);
 			super.nom = nom;
 			super.boissonPreferee = boissonPreferee;
@@ -57,7 +60,8 @@ public class Humain {
 		//l'intérieur de cette classe ou de ses instances.
 		//Solution 1: Redéfinir les méthodes dans la classe fille Commerçant
 		//Solution 2: Faire appel au constructeur super()
-		
+			
+			
 		
 			public void seFaireExtorquer() {
 				super.sous-=super.sous;
@@ -72,8 +76,20 @@ public class Humain {
 	
 	public class Yakuza extends Humain{
 		private int reputation;
+		private String clan;
 		
-		public 
+		public Yakuza(String nom,String boissionPreferee,int sous, String clan) {
+			super(nom,boissonPreferee,sous);
+			this.clan = clan;
+		}
+		
+		public void extorquer(Commerçant commerçant) {
+			int pocheCommerçant = ((Humain) commerçant).sous;
+			super.sous+=((Humain) commerçant).sous;
+			commerçant.seFaireExtorquer();
+			reputation+=1;
+			super.parler("J’ai piqué les " + pocheCommerçant + " sous de " + ((Humain) commerçant).nom + ", ce qui me fait " + super.sous + " sous dans ma poche. Hi ! Hi !");
+		}
 		
 	}
 	
