@@ -78,16 +78,17 @@ public class Humain {
 		private int reputation;
 		private String clan;
 		
-		public Yakuza(String nom,String boissionPreferee,int sous, String clan) {
+		public Yakuza(String nom,String boissionPreferee,int sous, String clan,int reputation) {
 			super(nom,boissonPreferee,sous);
 			this.clan = clan;
+			this.reputation = reputation;
 		}
 		
 		public void extorquer(Commerçant commerçant) {
 			int pocheCommerçant = ((Humain) commerçant).sous;
 			super.sous+=((Humain) commerçant).sous;
 			commerçant.seFaireExtorquer();
-			reputation+=1;
+			this.reputation+=1;
 			super.parler("J’ai piqué les " + pocheCommerçant + " sous de " + ((Humain) commerçant).nom + ", ce qui me fait " + super.sous + " sous dans ma poche. Hi ! Hi !");
 		}
 		
