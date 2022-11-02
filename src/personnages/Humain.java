@@ -83,7 +83,11 @@ public class Humain {
 			this.clan = clan;
 			this.reputation = reputation;
 		}
-		
+			
+		public int getReputation() {
+			return reputation;
+		}
+
 		public void extorquer(Commerçant commerçant) {
 			int pocheCommerçant = ((Humain) commerçant).sous;
 			super.sous+=((Humain) commerçant).sous;
@@ -92,22 +96,55 @@ public class Humain {
 			super.parler("J’ai piqué les " + pocheCommerçant + " sous de " + ((Humain) commerçant).nom + ", ce qui me fait " + super.sous + " sous dans ma poche. Hi ! Hi !");
 		}
 		
+		public int perdre() {
+			super.parler("J’ai perdu mon duel et mes " + super.sous + " sous, snif... J'ai déshonoré le clan de " + this.clan );
+			super.sous -= super.sous;
+			this.reputation-=1;
+			return this.getReputation();
+		}		
+		
+		public int gagner(int gain) {
+			super.sous+=gain;
+			this.reputation+=1;
+			super.parler("Ce ronin pensait vraiment battre " + super.nom + " du clan " + this.clan + "? Je l'ai dépouillé de ses " + gain + " sous.");
+			return this.getReputation();
+		}
+		
 	}
 	
 	public class Ronin extends Humain{
-		private int honneur;
-		
+		private int honneur;	
+
 		public Ronin(String nom,String boissionPreferee,int sous,int honneur) {
 			super(nom,boissonPreferee,sous);
 			this.honneur = honneur;
 		}
-	
+		
 		public void donner(Commerçant commerçant) {
 			int donnation = (super.sous*10)/100;
 			super.parler("Prend ces " + donnation + " sous.");
 			commerçant.recevoir(donnation);
 		}
+		public void provoquer(Yakuza yakuza) {
+			int forceRonin = this.honneur * 2 ;
+			if(forceRonin >= yakuza.reputation) {
+				super.sous+=((Humain)yakuza).sous;
+				this.honneur+=1;
+				super.parler("Je t'ai retrouvé vermine, tu vas payer pour ce que tu as fait à ce pauvre marchand!");
+				super.parler("Je t’ai eu petit yakuza!");
+				yakuza.perdre();
+			}
+			
+			else {
+				super.parler("J'ai perdu contre ce yakuza, mon honneur et ma bourse ont en pris un coup.");
+				this.honneur-=1;
+				yakuza.gagner(super.sous);
+				super.sous-=super.sous;
+				
+			}
+		}
 	}
+	
 	
 	
 	public static void main(String[] args) {
