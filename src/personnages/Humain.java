@@ -151,6 +151,12 @@ public class Humain {
 			return this.getReputation();
 		}
 		
+		//@Override
+		public void direBonjour() {
+			parler("Bonjour ! Je m’appelle " + super.nom + " et j’aime boire du " + super.boissonPreferee) ;
+			parler("Mon clan est celui de " + this.clan);
+		}
+		
 	}
 	
 	public class Ronin extends Humain{
