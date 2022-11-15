@@ -4,6 +4,8 @@ public class Humain {
 	private String nom;
 	private String boissonPreferee;
 	private int sous;
+	private int nbConnaissance;
+	private String[] memoire = new String[30];
 	
 	public Humain(String nom, String boissonPreferee, int sous) {
 		this.nom = nom;
@@ -13,6 +15,7 @@ public class Humain {
 	
 	public Humain() {
 	}
+	
 	
 	public void parler(String texte) {
 		System.out.println(prendreParole() + "«" + texte + "»");
@@ -47,9 +50,47 @@ public class Humain {
 			perdreArgent(prix);
 		}
 	}
+	
+	public void memoriser(Humain humain) {
+		if(memoire[memoire.length-1]!=null){
+			for(int i = 0;i<nbConnaissance-1;i++) {
+				memoire[i] = memoire[i+1];
+			}
+			memoire[nbConnaissance-1] = humain.nom;
+		}
+		else {
+			memoire[nbConnaissance] = humain.nom;
+			nbConnaissance+=1;
+		}	
+	}
+	
+	public void repondre(Humain humain) {
+		direBonjour();
+		memoriser(humain);
+	}
+	
+	public void faireConnaissanceAvec(Humain humain) {
+		direBonjour();
+		humain.repondre(this);
+		memoriser(humain);
+	}
+	
+	public void listerConnaissance() {
+		String texte;
+		if(nbConnaissance==1) {
+			texte = memoire[0];
+		}
+		else {
+			texte = memoire[0];
+			for(int i = 1; i<=nbConnaissance-1; i++) {
+				texte+=","+memoire[i];
+			}
+		}
+		parler("Je connais beaucoup de monde dont :" + texte);
+	}
 
-	public class Commerçant extends Humain{
-		public Commerçant(String nom, String boissonPreferee, int sous) {
+	public class Commercant extends Humain{
+		public Commercant(String nom, String boissonPreferee, int sous) {
 			super(nom,boissonPreferee,sous);
 			super.nom = nom;
 			super.boissonPreferee = boissonPreferee;
@@ -88,12 +129,12 @@ public class Humain {
 			return reputation;
 		}
 
-		public void extorquer(Commerçant commerçant) {
-			int pocheCommerçant = ((Humain) commerçant).sous;
-			super.sous+=((Humain) commerçant).sous;
-			commerçant.seFaireExtorquer();
+		public void extorquer(Commercant commercant) {
+			int pocheCommercant = ((Humain) commercant).sous;
+			super.sous+=((Humain) commercant).sous;
+			commercant.seFaireExtorquer();
 			this.reputation+=1;
-			super.parler("J’ai piqué les " + pocheCommerçant + " sous de " + ((Humain) commerçant).nom + ", ce qui me fait " + super.sous + " sous dans ma poche. Hi ! Hi !");
+			super.parler("J’ai piqué les " + pocheCommercant + " sous de " + ((Humain) commercant).nom + ", ce qui me fait " + super.sous + " sous dans ma poche. Hi ! Hi !");
 		}
 		
 		public int perdre() {
@@ -120,10 +161,10 @@ public class Humain {
 			this.honneur = honneur;
 		}
 		
-		public void donner(Commerçant commerçant) {
+		public void donner(Commercant commercant) {
 			int donnation = (super.sous*10)/100;
 			super.parler("Prend ces " + donnation + " sous.");
-			commerçant.recevoir(donnation);
+			commercant.recevoir(donnation);
 		}
 		public void provoquer(Yakuza yakuza) {
 			int forceRonin = this.honneur * 2 ;
