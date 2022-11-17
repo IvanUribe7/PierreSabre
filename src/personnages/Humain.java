@@ -1,16 +1,19 @@
 package personnages;
+import java.util.Random;
+
 
 public class Humain {
 	private String nom;
 	private String boissonPreferee;
 	private int sous;
-	private int nbConnaissance;
-	private String[] memoire = new String[30];
+	protected int nbConnaissance = 0;
+	protected Humain[] memoire ;
 	
 	public Humain(String nom, String boissonPreferee, int sous) {
 		this.nom = nom;
 		this.boissonPreferee = boissonPreferee;
 		this.sous = sous;
+		this.memoire = new Humain[30];
 	}
 	
 	public Humain() {
@@ -36,8 +39,12 @@ public class Humain {
 	public String getNom() {
 		return nom;
 	}
+	
+	public int getSous() {
+		return sous;
+	}
 
-	public int gaganerArgent(int gain) {
+	public int gagnerArgent(int gain) {
 		return this.sous+=gain;
 	}
 	
@@ -55,16 +62,16 @@ public class Humain {
 		}
 	}
 	
-	public void memoriser(Humain humain) {
+	protected void memoriser(Humain humain) {
 		if(memoire[memoire.length-1]!=null){
 			for(int i = 0;i<nbConnaissance-1;i++) {
 				memoire[i] = memoire[i+1];
 			}
-			memoire[nbConnaissance-1] = humain.nom;
+			memoire[29] = humain;
 		}
-		else {
-			memoire[nbConnaissance] = humain.nom;
-			nbConnaissance+=1;
+		if(nbConnaissance<30) {
+			memoire[nbConnaissance] = humain;
+			nbConnaissance++;
 		}	
 	}
 	
@@ -82,12 +89,12 @@ public class Humain {
 	public void listerConnaissance() {
 		String texte;
 		if(nbConnaissance==1) {
-			texte = memoire[0];
+			texte = memoire[0].getNom();
 		}
 		else {
-			texte = memoire[0];
+			texte = memoire[0].getNom();
 			for(int i = 1; i<=nbConnaissance-1; i++) {
-				texte+=","+memoire[i];
+				texte+=","+memoire[i].getNom();
 			}
 		}
 		parler("Je connais beaucoup de monde dont :" + texte);
@@ -202,7 +209,7 @@ public class Humain {
 			this.seigneur = seigneur;
 		}
 		
-		//@Override
+		@Override
 		public void direBonjour() {
 			super.direBonjour();
 			parler("Je suis fier de servir le seigneur " + this.seigneur);
@@ -211,6 +218,61 @@ public class Humain {
 		//@Override
 		public void boire(String boisson) {
 			parler("Qu'est-ce que je vais choisir comme boisson ? Tiens je vais prendre "+ "du " + boisson + ".");
+		}
+		
+		
+	}
+	
+	public class Traitre extends Samourai{
+		private int niveauTraitrise;
+		
+		public Traitre(String seigneur,String nom,String boissonPreferee,int sous) {
+			super(seigneur,nom,boissonPreferee,sous);
+			this.niveauTraitrise = 0;
+		}
+		
+		@Override
+		public void direBonjour() {
+			super.direBonjour();
+			parler("Mais je suis un traître et mon niveau de traîtrise est : " + niveauTraitrise + ". Chut !");
+		}
+		
+		public void ranconner(Commercant commercant) {
+			if (niveauTraitrise < 3) {
+				int argentRanconner = ((Humain)commercant).sous;
+				argentRanconner = (argentRanconner*2)/10;
+				commercant.perdreArgent(argentRanconner);
+				super.gagnerArgent(argentRanconner);
+				parler("Si tu veux ma protection contre les Yakuzas, il va falloir payer ! Donne-moi " + argentRanconner +  " sous ou gare à toi !");
+				commercant.parler("Tout de suite grand " + getNom() + ".");
+				niveauTraitrise+=1;
+			} 
+			
+			else {
+				parler("Mince je ne peux plus rançonner personne sinon un samouraï risque de me démasquer !");
+			}
+		}
+		
+		public void faireLeGentil() {
+			if(nbConnaissance<1) {
+				parler("Je ne peux faire ami ami avec personne car  je ne connais personne ! Snif");
+			}
+			
+			else {
+				int don = getSous() / 20;
+				Random random = new Random();
+				Humain ami = memoire[random.nextInt(nbConnaissance)];
+				String nomAmi = ami.getNom();
+				parler("Il faut absolument remonter ma cote de confiance. Je vais me faire ami ami avec "+ nomAmi +".");
+				parler("Bonjour l'ami ! Je voudrais vous aider en vous donnant " + don + " sous.");
+				ami.gagnerArgent(don);
+				perdreArgent(don);
+				ami.parler("Merci " + this.getNom() + ". Vous êtes quelqu'un de bien.");
+				if (niveauTraitrise > 1) {
+					niveauTraitrise-=1;
+					
+				}
+			}
 		}
 		
 		
