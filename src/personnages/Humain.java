@@ -21,7 +21,7 @@ public class Humain {
 		System.out.println(prendreParole() + "«" + texte + "»");
 	}
 	
-	private String prendreParole() {
+	public String prendreParole() {
 		return "(" + nom + ") - ";
 	}
 	
@@ -33,6 +33,10 @@ public class Humain {
 		parler("Mmmm, un bon verre de " +  this.boissonPreferee + "! GLOUPS !");
 	}
 	
+	public String getNom() {
+		return nom;
+	}
+
 	public int gaganerArgent(int gain) {
 		return this.sous+=gain;
 	}
@@ -116,13 +120,12 @@ public class Humain {
 		}
 	
 	public class Yakuza extends Humain{
-		private int reputation;
+		private int reputation = 0;
 		private String clan;
 		
-		public Yakuza(String nom,String boissonPreferee,int sous, String clan,int reputation) {
+		public Yakuza(String nom,String boissonPreferee,int sous, String clan) {
 			super(nom,boissonPreferee,sous);
 			this.clan = clan;
-			this.reputation = reputation;
 		}
 			
 		public int getReputation() {
@@ -153,18 +156,17 @@ public class Humain {
 		
 		//@Override
 		public void direBonjour() {
-			parler("Bonjour ! Je m’appelle " + super.nom + " et j’aime boire du " + super.boissonPreferee) ;
+			super.direBonjour();
 			parler("Mon clan est celui de " + this.clan);
 		}
 		
 	}
 	
 	public class Ronin extends Humain{
-		private int honneur;	
+		private int honneur = 1;	
 
-		public Ronin(String nom,String boissionPreferee,int sous,int honneur) {
+		public Ronin(String nom,String boissonPreferee,int sous) {
 			super(nom,boissonPreferee,sous);
-			this.honneur = honneur;
 		}
 		
 		public void donner(Commercant commercant) {
@@ -191,6 +193,29 @@ public class Humain {
 			}
 		}
 	}
+	
+	public class Samourai extends Ronin{
+		private String seigneur;
+		
+		public Samourai(String seigneur,String nom,String boissonPreferee,int sous) {
+			super(nom,boissonPreferee,sous);
+			this.seigneur = seigneur;
+		}
+		
+		//@Override
+		public void direBonjour() {
+			super.direBonjour();
+			parler("Je suis fier de servir le seigneur " + this.seigneur);
+		}
+		
+		//@Override
+		public void boire(String boisson) {
+			parler("Qu'est-ce que je vais choisir comme boisson ? Tiens je vais prendre "+ "du " + boisson + ".");
+		}
+		
+		
+	}
+	
 	
 	
 	
