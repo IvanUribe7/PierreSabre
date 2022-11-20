@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="Yakuza" version="4">
+  <OBJECT>
+    <ID name="Yakuza" mc="Standard.Interface" uid="34869611-d4ea-4339-b758-4c61c0326c8e"/>
+    <PID name="diagramme tp5" mc="Standard.Package" uid="792c8b25-013d-4b88-bd73-ecb0f2eb1a7e"/>
+    <ATTRIBUTES>
+      <ATT name="IsElementary">false</ATT>
+      <ATT name="IsAbstract">true</ATT>
+      <ATT name="IsLeaf">false</ATT>
+      <ATT name="IsRoot">false</ATT>
+      <ATT name="Visibility">Public</ATT>
+      <ATT name="Name"><![CDATA[Yakuza]]></ATT>
+      <ATT name="status">1970354901745664</ATT>
+    </ATTRIBUTES>
+    <DEPENDENCIES></DEPENDENCIES>
+  </OBJECT>
+</EXT>
